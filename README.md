@@ -1,4 +1,12 @@
-# Welcome to ASP.NET 5 Preview
+#ASP.NET 5 MVC Demo
+
+Uses Heroku Build pack 
+
+```
+heroku buildpacks:set https://github.com/jincod/dotnet-buildpack
+```
+
+## ASP.NET 5 Preview
 
 We've made some big updates in this release, so it’s **important** that you spend a few minutes to learn what’s new.
 
