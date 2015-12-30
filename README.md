@@ -7,18 +7,24 @@ heroku buildpacks:set http://github.com/aurlaw/dotnet-buildpack.git
 ```
 
 
-## Local
+## Local Dev
 
 Install dnx-watch
 
 ```
-dnu commands install Microsoft.Dnx.Watcher
+$ dnu commands install Microsoft.Dnx.Watcher
+```
+
+Export env from Heroku
+
+```
+$ ./env.sh
 ```
 
 Run with watch:
 
 ```
-dnx-watch --project src/Demo1.MVC --dnx-args web
+$ dnx-watch --project src/Demo1.MVC --dnx-args web
 ```
 
 ## Entity Framework
@@ -26,8 +32,10 @@ dnx-watch --project src/Demo1.MVC --dnx-args web
 Commands
 
 ```
-dnx --project src/Demo1.MVC.Data ef {command/arguments}
+$ dnx --project src/Demo1.MVC.Data ef {command/arguments}
 ```
+
+-------------------------
 
 ## ASP.NET 5 Preview
 
