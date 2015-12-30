@@ -3,7 +3,7 @@
 Uses Heroku Build pack 
 
 ```
-heroku buildpacks:set https://github.com/jincod/dotnet-buildpack
+heroku buildpacks:set http://github.com/aurlaw/dotnet-buildpack.git
 ```
 
 
