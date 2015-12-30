@@ -6,6 +6,29 @@ Uses Heroku Build pack
 heroku buildpacks:set https://github.com/jincod/dotnet-buildpack
 ```
 
+
+## Local
+
+Install dnx-watch
+
+```
+dnu commands install Microsoft.Dnx.Watcher
+```
+
+Run with watch:
+
+```
+dnx-watch --project src/Demo1.MVC --dnx-args web
+```
+
+## Entity Framework
+
+Commands
+
+```
+dnx --project src/Demo1.MVC.Data ef {command/arguments}
+```
+
 ## ASP.NET 5 Preview
 
 We've made some big updates in this release, so it’s **important** that you spend a few minutes to learn what’s new.
