@@ -1,9 +1,10 @@
 #!/bin/sh
-echo "" > .env
 for x in `heroku config -s`; do
   if [[ $x == DATABASE_URL* ]]; then
-	  echo $x?ssl=true >> .env
-  elif [ $x != '=>' ]; then
-	  echo $x >> .env
+	  export $x?ssl=true
+#   elif [[ $x == ASPNET_ENV* ]]; then
+	  #ignore
+  elif [[ $x != '=>' && $x != ASPNET_ENV* ]]; then
+	  export $x
   fi
 done
