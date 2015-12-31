@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,32 @@ namespace Demo1.MVC
             // builder.AddEnvironmentVariables();
             // Configuration = builder.Build();
             Configuration = AppConfig.Build(env);
+            
+                        Uri postgresUrl = new Uri(Configuration["DATABASE_URL"]);
+            var server = postgresUrl.Host;
+            var port = postgresUrl.Port;
+            var userInfo = postgresUrl.UserInfo.Split(new char[] {':'});
+            var database = postgresUrl.Segments[1];
+            var hasSsl = !string.IsNullOrEmpty(postgresUrl.Query);
+            
+            var connString = new StringBuilder();
+            connString.Append("Server=").Append(server).Append(";");
+            connString.Append("Port=").Append(port).Append(";");
+            connString.Append("Database=").Append(database).Append(";");
+            connString.Append("Userid=").Append(userInfo[0]).Append(";");
+            connString.Append("Password=").Append(userInfo[1]).Append(";");
+            if (hasSsl) {
+                // connString.Append("Protocol=3;");
+                connString.Append("SSL=true;");
+                connString.Append("SslMode=Require;");
+            }
+
+            
+            var loggerFactory = new LoggerFactory().AddConsole();
+            var logger = loggerFactory.CreateLogger(typeof(Program).FullName);
+            logger.LogInformation("DATABASE_URL: {0}", Configuration["DATABASE_URL"]);
+            logger.LogInformation("ConnectionString: {0}", connString);
+            
             
             _dataStartup = new Demo1.MVC.Data.Startup(env, appEnv);
             // Configuration["Data:DefaultConnection:ConnectionString"] = $@"Data Source={appEnv.ApplicationBasePath}/Demo1.MVC.db";

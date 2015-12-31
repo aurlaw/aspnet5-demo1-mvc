@@ -8,7 +8,7 @@ using Demo1.MVC.Data;
 namespace Demo1.MVC.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20151230150509_Initial")]
+    [Migration("20151231024442_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

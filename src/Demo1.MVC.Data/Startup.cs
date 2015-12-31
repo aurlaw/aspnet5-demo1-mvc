@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,11 +39,63 @@ namespace Demo1.MVC.Data
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            /*
+            Server=127.0.0.1;
+            Port=5432;
+            Database=myDataBase;
+            Userid=myUsername;
+            Password=myPassword;
+            Protocol=3;
+            SSL=true;
+            SslMode=Require;
+            
+            postgres://amwmixukoulpps:bYko8sAw8CPoSfPME8GX6_EGf5@ec2-107-22-184-127.compute-1.amazonaws.com:5432/db0sfba6gebbvi?ssl=true
+            
+            
+            Uri myUri = new Uri("http://server:8080/func2/SubFunc2?query=somevalue");
+
+            // Get host part (host name or address and port). Returns "server:8080".
+            string hostpart = myUri.Authority;
+
+            // Get path and query string parts. Returns "/func2/SubFunc2?query=somevalue".
+            string pathpart = myUri.PathAndQuery;
+
+            // Get path components. Trailing separators. Returns { "/", "func2/", "sunFunc2" }.
+            string[] pathsegments = myUri.Segments;
+
+            // Get query string. Returns "?query=somevalue".
+            string querystring = myUri.Query;            
+            
+            */
+            Uri postgresUrl = new Uri(Configuration["DATABASE_URL"]);
+            var server = postgresUrl.Host;
+            var port = postgresUrl.Port;
+            var userInfo = postgresUrl.UserInfo.Split(new char[] {':'});
+            var database = postgresUrl.Segments[1];
+            var hasSsl = !string.IsNullOrEmpty(postgresUrl.Query);
+            
+            var connString = new StringBuilder();
+            connString.Append("Server=").Append(server).Append(";");
+            connString.Append("Port=").Append(port).Append(";");
+            connString.Append("Database=").Append(database).Append(";");
+            connString.Append("Userid=").Append(userInfo[0]).Append(";");
+            connString.Append("Password=").Append(userInfo[1]).Append(";");
+            if (hasSsl) {
+                // connString.Append("Protocol=3;");
+                // connString.Append("SSL=true;");
+                connString.Append("SslMode=Require;");
+                connString.Append("Use SSL Stream=true;");
+            }
+            
             // Add framework services.
             services.AddEntityFramework()
-                .AddSqlite()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));
+                .AddNpgsql()
+                .AddDbContext<ApplicationDbContext>(options => 
+                    options.UseNpgsql(connString.ToString()));
+            // services.AddEntityFramework()
+            //     .AddSqlite()
+            //     .AddDbContext<ApplicationDbContext>(options =>
+            //         options.UseSqlite(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
