@@ -1,5 +1,7 @@
 #ASP.NET 5 MVC Demo
 
+[![Build Status](https://travis-ci.org/aurlaw/aspnet5-demo1-mvc.svg)](https://travis-ci.org/aurlaw/aspnet5-demo1-mvc)
+
 Uses Heroku Build pack 
 
 ```
