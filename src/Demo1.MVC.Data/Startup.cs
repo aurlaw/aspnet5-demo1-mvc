@@ -78,14 +78,17 @@ namespace Demo1.MVC.Data
             connString.Append("Server=").Append(server).Append(";");
             connString.Append("Port=").Append(port).Append(";");
             connString.Append("Database=").Append(database).Append(";");
-            connString.Append("Userid=").Append(userInfo[0]).Append(";");
-            connString.Append("Password=").Append(userInfo[1]).Append(";");
-            if (hasSsl) {
-                // connString.Append("Protocol=3;");
-                // connString.Append("SSL=true;");
-                connString.Append("SslMode=Require;");
-                connString.Append("Use SSL Stream=true;");
+            if(userInfo.Any()) {
+                connString.Append("Userid=").Append(userInfo[0]).Append(";");
+                string pwd = userInfo.Length == 2? userInfo[1] : string.Empty;
+                connString.Append("Password=").Append(pwd).Append(";");
             }
+            // if (hasSsl) {
+            //     // connString.Append("Protocol=3;");
+            //     // connString.Append("SSL=true;");
+            //     connString.Append("SslMode=Require;");
+            //     connString.Append("Use SSL Stream=true;");
+            // }
             
             // Add framework services.
             services.AddEntityFramework()
