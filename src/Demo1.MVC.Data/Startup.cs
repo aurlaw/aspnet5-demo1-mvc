@@ -117,6 +117,7 @@ namespace Demo1.MVC.Data
                 {
                     serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
                             .Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>().EnsureSeedData();
                 }
             }
             catch { }

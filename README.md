@@ -37,6 +37,10 @@ Commands
 $ dnx --project src/Demo1.MVC.Data ef {command/arguments}
 ```
 
+http://www.codeproject.com/Tips/988763/Database-Migration-in-Entity-Framework
+
+https://github.com/aspnet/EntityFramework/issues/3042
+
 -------------------------
 
 ## ASP.NET 5 Preview
