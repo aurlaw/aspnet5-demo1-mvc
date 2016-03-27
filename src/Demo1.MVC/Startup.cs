@@ -101,6 +101,9 @@ namespace Demo1.MVC
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                
+                _dataStartup.Configure(app);
+
             }
             else
             {

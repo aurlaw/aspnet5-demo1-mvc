@@ -49,6 +49,7 @@ namespace Demo1.MVC.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.UpdateProfileImage ? "Updated Profile Image"
                 : "";
 
             var user = await GetCurrentUserAsync();
@@ -58,7 +59,8 @@ namespace Demo1.MVC.Controllers
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                ProfileImage = user.ProfileImage
             };
             return View(model);
         }
@@ -315,6 +317,46 @@ namespace Demo1.MVC.Controllers
             var message = result.Succeeded ? ManageMessageId.AddLoginSuccess : ManageMessageId.Error;
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+        
+        
+        //
+        // GET: /Manage/ProfileImage
+        [HttpGet]
+        public async Task<ActionResult> ProfileImage()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+            return View(new ProfileImageViewModel {
+                ProfileImage = user.ProfileImage
+            });
+            
+        }
+        
+         //
+        // POST: /Manage/UpdateProfileImage
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfileImage(ProfileImageViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            // Generate the token and send it
+            var user = await GetCurrentUserAsync();
+            user.ProfileImage = model.ProfileImage;
+            
+            var result = await _userManager.UpdateAsync(user);
+
+            var message = result.Succeeded ? ManageMessageId.UpdateProfileImage : ManageMessageId.Error;
+            return RedirectToAction(nameof(Index), new { Message = message });
+            
+        }
+
+
 
         #region Helpers
 
@@ -335,6 +377,7 @@ namespace Demo1.MVC.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            UpdateProfileImage,
             Error
         }
 

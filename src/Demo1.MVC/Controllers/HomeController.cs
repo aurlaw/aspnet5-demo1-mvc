@@ -23,6 +23,7 @@ namespace Demo1.MVC.Controllers
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
+            ViewData["Details"] = "Some contact data";
 
             return View();
         }

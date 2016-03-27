@@ -17,5 +17,7 @@ namespace Demo1.MVC.ViewModels.Manage
         public bool TwoFactor { get; set; }
 
         public bool BrowserRemembered { get; set; }
+        
+        public string ProfileImage {get;set;}
     }
 }
