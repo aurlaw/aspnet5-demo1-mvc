@@ -1,4 +1,4 @@
-#ASP.NET 5 MVC Demo
+#ASP.NET Core MVC Demo
 
 [![Build Status](https://travis-ci.org/aurlaw/aspnet5-demo1-mvc.svg)](https://travis-ci.org/aurlaw/aspnet5-demo1-mvc)
 
@@ -7,6 +7,18 @@ Uses Heroku Build pack
 ```
 heroku buildpacks:set http://github.com/aurlaw/dotnet-buildpack.git
 ```
+
+## Dependencies
+
+* ASP.NET MVC 6 beta
+* Entity Framework 7 beta
+* Entity Framework 7 Npgsql (Postgres)
+* AWS S3 
+
+### Environemt Variables
+DATABASE_URL= PostgreSQL connection string
+ASPNET_ENV=Development
+AWSSDK TODO
 
 
 ## Local Dev

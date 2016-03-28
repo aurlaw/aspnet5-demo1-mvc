@@ -10,6 +10,9 @@
 
   "dependencies": {
     "Demo1.MVC.Data": "1.0.0-*",
+    "AWSSDK.Core": "3.2.0-beta",
+    "AWSSDK.S3": "3.2.0-beta",
+    "AWSSDK.SecurityToken": "3.2.0-beta",
     "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-*",
     "Microsoft.AspNet.IISPlatformHandler": "1.0.0-rc1-*",
     "Microsoft.AspNet.Diagnostics.Entity": "7.0.0-rc1-*",
