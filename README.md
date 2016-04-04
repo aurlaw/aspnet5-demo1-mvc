@@ -41,6 +41,12 @@ Run with watch:
 $ dnx-watch --project src/Demo1.MVC --dnx-args web
 ```
 
+Tests:
+
+```
+$ dnx --project Tests/Demo1.Test test
+```
+
 ## Entity Framework
 
 Commands

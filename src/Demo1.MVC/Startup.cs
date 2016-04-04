@@ -84,10 +84,20 @@ namespace Demo1.MVC
             //     .AddEntityFrameworkStores<ApplicationDbContext>()
             //     .AddDefaultTokenProviders();
 
+            services.AddOptions();
+            
+            // Configure MyOptions using code
+            services.Configure<MGOptions>(Configuration);
+            
+            // services.Configure<MailGunOptions>(mOptions =>
+            // {
+            //     mOptions.ApiKey = Configuration["MAILGUN_API_KEY"];
+            //     mOptions.Domain = Configuration["MAILGUN_DOMAIN"];
+            // });
             services.AddMvc();
 
             // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<IEmailSender, MailGunService>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
@@ -122,6 +132,8 @@ namespace Demo1.MVC
                 // }
                 // catch { }
             }
+            
+            
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
