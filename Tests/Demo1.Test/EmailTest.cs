@@ -32,7 +32,7 @@ namespace Demo1.Test
             var mService = new MailGunService(service);
             var response = await mService.SendEmailMessageAsync("test@test.com", "subject", "message");
             
-            Assert.True(response.StatusCode == HttpStatusCode.OK);
+            Assert.True(response);
         }
 
     }

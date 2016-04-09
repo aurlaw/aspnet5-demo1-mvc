@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.OptionsModel;
+using MailKit.Net.Smtp;
+using MimeKit;
+using MailKit.Security;
 
 namespace Demo1.MVC.Services
 {
@@ -22,21 +25,37 @@ namespace Demo1.MVC.Services
            return SendEmailMessageAsync(email, subject, message);
         }
         
-        public async Task<HttpResponseMessage> SendEmailMessageAsync(string email, string subject, string message)
+        public async Task<bool> SendEmailMessageAsync(string email, string subject, string message)
         {
             
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
-                Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes("api" + ":" + this.Options.MGKey)));
+            var emailMessage = new MimeMessage();
+        
+            emailMessage.From.Add(new MailboxAddress(this.Options.MGFromName, this.Options.MGFrom));
+            emailMessage.To.Add(new MailboxAddress("", email));
+            emailMessage.Subject = subject;
+            emailMessage.Body = new TextPart("plain") { Text = message };
+        
+            using (var client = new SmtpClient())
+            {
+                client.LocalDomain = this.Options.MGDomain;                
+                await client.ConnectAsync(this.Options.MGSMTPHostname, this.Options.MGSMTPPort, 
+                    SecureSocketOptions.None).ConfigureAwait(false);
+                await client.SendAsync(emailMessage).ConfigureAwait(false);
+                await client.DisconnectAsync(true).ConfigureAwait(false);
+            }            
+        //     var client = new HttpClient();
+        //     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", 
+        //         Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes("api" + ":" + this.Options.MGKey)));
 
-                var form = new Dictionary<string, string>();
-                form["from"]    = this.Options.MGFrom;
-                form["to"]      = email;
-                form["subject"] = subject;
-                form["text"]    = message;
-              var mailgunUrl =   "https://api.mailgun.net/v2/" + this.Options.MGDomain + "/messages";
-                Console.WriteLine(mailgunUrl);
-           return await client.PostAsync(mailgunUrl, new FormUrlEncodedContent(form));
+        //         var form = new Dictionary<string, string>();
+        //         form["from"]    = this.Options.MGFrom;
+        //         form["to"]      = email;
+        //         form["subject"] = subject;
+        //         form["text"]    = message;
+        //       var mailgunUrl =   "https://api.mailgun.net/v2/" + this.Options.MGDomain + "/messages";
+        //         Console.WriteLine(mailgunUrl);
+        //    return await client.PostAsync(mailgunUrl, new FormUrlEncodedContent(form));
+            return false;
             
         }
     }
@@ -44,8 +63,13 @@ namespace Demo1.MVC.Services
     public class MGOptions
     {
         public string MGFrom {get;set;}
+        public string MGFromName {get;set;}
         public string MGKey {get;set;}
         public string MGDomain {get;set;}
+        public string MGSMTPHostname {get;set;}
+        public int MGSMTPPort {get;set;}
+        public string MGSMTPLogin {get;set;}
+        public string MGSMTPPassword {get;set;}
 
     }
 }
